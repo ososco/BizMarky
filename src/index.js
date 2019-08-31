@@ -1,10 +1,31 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import firebase from "firebase/app";
+import "firebase/database";
+
+import { config } from "./Firebase";
 
 import List from "./List";
 import Control from "./Control";
 
 import "./styles.css";
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(config);
+}
+
+const database = firebase.database();
+
+function snapshotToArray(snapshot) {
+  let returnArr = [];
+  snapshot.forEach(childSnapshot => {
+    let item = childSnapshot.val();
+    item.key = childSnapshot.key;
+
+    returnArr.push(item);
+  });
+  return returnArr;
+}
 
 class App extends React.Component {
   constructor(props) {
@@ -25,7 +46,7 @@ class App extends React.Component {
     const bookmark = {
       name: this.state.name,
       url: this.state.url,
-      date: new Date()
+      date: new Date().getTime()
     };
     this.setState(state => {
       const bookmarks = [...this.state.bookmarks, bookmark];
@@ -36,47 +57,23 @@ class App extends React.Component {
       };
     });
 
-    fetch(
-      "https://jsonstorage.net/api/items/acae24a2-0658-46d0-a154-065ab3d5cd5f",
-      {
-        method: "PUT",
-        headers: {
-          "Content-type": "application/json"
-        },
-        body: JSON.stringify([...this.state.bookmarks, bookmark])
-      }
-    ).catch(function(res) {
-      console.log(res);
-    });
+    database.ref("bookmarks/").push(bookmark);
   };
 
   handleRemove = e => {
     this.setState({
       bookmarks: this.state.bookmarks.filter(b => b.url !== e.target.value)
     });
-
-    fetch(
-      "https://jsonstorage.net/api/items/acae24a2-0658-46d0-a154-065ab3d5cd5f",
-      {
-        method: "PUT",
-        headers: {
-          "Content-type": "application/json"
-        },
-        body: JSON.stringify(
-          this.state.bookmarks.filter(b => b.url !== e.target.value)
-        )
-      }
-    ).catch(function(res) {
-      console.log(res);
-    });
+    database
+      .ref("bookmarks/")
+      .child(e.target.value)
+      .remove();
   };
 
   componentDidMount() {
-    fetch(
-      "https://jsonstorage.net/api/items/acae24a2-0658-46d0-a154-065ab3d5cd5f"
-    )
-      .then(res => res.json())
-      .then(data => this.setState({ bookmarks: data }));
+    database.ref("bookmarks/").on("value", snapshot => {
+      this.setState({ bookmarks: snapshotToArray(snapshot) });
+    });
   }
 
   render() {
