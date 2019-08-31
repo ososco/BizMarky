@@ -91,8 +91,7 @@ body {
 ul {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-gap: 10px;
-
+  grid-gap: 7px;
   padding: 0 5px 0 5px;
   margin: 0;
 }
@@ -102,7 +101,7 @@ ul {
   grid-template-columns: auto fit-content(1000px);
   grid-template-rows: 1fr;
   list-style-type: none;
-  margin-bottom: 7px;
+
   padding: 5px;
   border: 1pt solid rgb(216, 216, 216);
   -webkit-border-radius: 4px;
