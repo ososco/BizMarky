@@ -1,2 +1,0 @@
-# BizMarky
-Created with CodeSandbox
