@@ -31,7 +31,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      bookmarks: [{ id: 1, name: "Bookmark 1", url: "#" }]
+      bookmarks: [{ key: 1, name: "Loading...", url: "#" }]
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
