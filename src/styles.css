@@ -1,3 +1,14 @@
+@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
+  .App {
+    display: grid;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 1fr 1fr !important;
+    grid-template-areas: "." ".";
+    grid-column-gap: 0px;
+    grid-row-gap: 10px !important;
+  }
+}
+
 body {
   font-family: "Roboto", sans-serif;
   background-color: #330000;
@@ -7,7 +18,6 @@ body {
 }
 
 .App {
-  font-family: sans-serif;
   display: grid;
   grid-template-columns: 350px auto;
   grid-template-rows: 1fr;
