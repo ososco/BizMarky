@@ -31,7 +31,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      bookmarks: [{ key: 1, name: "Loading...", url: "#" }]
+      bookmarks: [{ key: 1, name: "Loading...", url: "#" }],
+      name: "",
+      url: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -48,16 +50,19 @@ class App extends React.Component {
       url: this.state.url,
       date: new Date().getTime()
     };
-    this.setState(state => {
-      const bookmarks = [...this.state.bookmarks, bookmark];
-      return {
-        bookmarks,
-        name: "",
-        url: ""
-      };
-    });
-
-    database.ref("bookmarks/").push(bookmark);
+    if (this.state.name === "" || this.state.url === "") {
+      alert("All fields are required!");
+    } else {
+      this.setState(state => {
+        const bookmarks = [...this.state.bookmarks, bookmark];
+        return {
+          bookmarks,
+          name: "",
+          url: ""
+        };
+      });
+      database.ref("bookmarks/").push(bookmark);
+    }
   };
 
   handleRemove = e => {
